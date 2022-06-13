@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BookManagerSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="bookid" />
+          </Key>
+          <Property Name="bookid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="booktype" Type="int" />
+          <Property Name="bookauthor" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bookname" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bookImgSrc" Type="varchar" MaxLength="128" />
+          <Property Name="booklibrary" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="bookpubdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="bookType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="typeName" Type="varchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="brrow_data">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="readerid" Type="int" />
+          <Property Name="bookid" Type="int" />
+          <Property Name="brrowdate" Type="datetime" />
+          <Property Name="status" Type="int" />
+        </EntityType>
+        <EntityType Name="reader">
+          <Key>
+            <PropertyRef Name="readerid" />
+          </Key>
+          <Property Name="readerid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="readername" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="readertype" Type="int" Nullable="false" />
+          <Property Name="readerpwd" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="createAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="return_record">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="readerid" Type="int" />
+          <Property Name="bookid" Type="int" />
+          <Property Name="returndate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__book__booktype__6EF57B66">
+          <End Role="bookType" Type="Self.bookType" Multiplicity="0..1" />
+          <End Role="book" Type="Self.book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bookType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="book">
+              <PropertyRef Name="booktype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__brrow_dat__booki__74AE54BC">
+          <End Role="book" Type="Self.book" Multiplicity="0..1" />
+          <End Role="brrow_data" Type="Self.brrow_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="book">
+              <PropertyRef Name="bookid" />
+            </Principal>
+            <Dependent Role="brrow_data">
+              <PropertyRef Name="bookid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__brrow_dat__brrow__73BA3083">
+          <End Role="reader" Type="Self.reader" Multiplicity="0..1" />
+          <End Role="brrow_data" Type="Self.brrow_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reader">
+              <PropertyRef Name="readerid" />
+            </Principal>
+            <Dependent Role="brrow_data">
+              <PropertyRef Name="readerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__return_re__booki__7A672E12">
+          <End Role="book" Type="Self.book" Multiplicity="0..1" />
+          <End Role="return_record" Type="Self.return_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="book">
+              <PropertyRef Name="bookid" />
+            </Principal>
+            <Dependent Role="return_record">
+              <PropertyRef Name="bookid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__return_re__reade__797309D9">
+          <End Role="reader" Type="Self.reader" Multiplicity="0..1" />
+          <End Role="return_record" Type="Self.return_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reader">
+              <PropertyRef Name="readerid" />
+            </Principal>
+            <Dependent Role="return_record">
+              <PropertyRef Name="readerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookManagerSystemModelStoreContainer">
+          <EntitySet Name="book" EntityType="Self.book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bookType" EntityType="Self.bookType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="brrow_data" EntityType="Self.brrow_data" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reader" EntityType="Self.reader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="return_record" EntityType="Self.return_record" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__book__booktype__6EF57B66" Association="Self.FK__book__booktype__6EF57B66">
+            <End Role="bookType" EntitySet="bookType" />
+            <End Role="book" EntitySet="book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__brrow_dat__booki__74AE54BC" Association="Self.FK__brrow_dat__booki__74AE54BC">
+            <End Role="book" EntitySet="book" />
+            <End Role="brrow_data" EntitySet="brrow_data" />
+          </AssociationSet>
+          <AssociationSet Name="FK__brrow_dat__brrow__73BA3083" Association="Self.FK__brrow_dat__brrow__73BA3083">
+            <End Role="reader" EntitySet="reader" />
+            <End Role="brrow_data" EntitySet="brrow_data" />
+          </AssociationSet>
+          <AssociationSet Name="FK__return_re__booki__7A672E12" Association="Self.FK__return_re__booki__7A672E12">
+            <End Role="book" EntitySet="book" />
+            <End Role="return_record" EntitySet="return_record" />
+          </AssociationSet>
+          <AssociationSet Name="FK__return_re__reade__797309D9" Association="Self.FK__return_re__reade__797309D9">
+            <End Role="reader" EntitySet="reader" />
+            <End Role="return_record" EntitySet="return_record" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BookManagerSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="bookid" />
+          </Key>
+          <Property Name="bookid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="booktype" Type="Int32" />
+          <Property Name="bookauthor" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="bookname" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="bookImgSrc" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="booklibrary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="bookpubdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="bookType1" Relationship="Self.FK__book__booktype__6EF57B66" FromRole="book" ToRole="bookType" />
+          <NavigationProperty Name="brrow_data" Relationship="Self.FK__brrow_dat__booki__74AE54BC" FromRole="book" ToRole="brrow_data" />
+          <NavigationProperty Name="return_record" Relationship="Self.FK__return_re__booki__7A672E12" FromRole="book" ToRole="return_record" />
+        </EntityType>
+        <EntityType Name="bookType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeName" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="book" Relationship="Self.FK__book__booktype__6EF57B66" FromRole="bookType" ToRole="book" />
+        </EntityType>
+        <EntityType Name="brrow_data">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="readerid" Type="Int32" />
+          <Property Name="bookid" Type="Int32" />
+          <Property Name="brrowdate" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="book" Relationship="Self.FK__brrow_dat__booki__74AE54BC" FromRole="brrow_data" ToRole="book" />
+          <NavigationProperty Name="reader" Relationship="Self.FK__brrow_dat__brrow__73BA3083" FromRole="brrow_data" ToRole="reader" />
+        </EntityType>
+        <EntityType Name="reader">
+          <Key>
+            <PropertyRef Name="readerid" />
+          </Key>
+          <Property Name="readerid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="readername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="readertype" Type="Int32" Nullable="false" />
+          <Property Name="readerpwd" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="createAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="brrow_data" Relationship="Self.FK__brrow_dat__brrow__73BA3083" FromRole="reader" ToRole="brrow_data" />
+          <NavigationProperty Name="return_record" Relationship="Self.FK__return_re__reade__797309D9" FromRole="reader" ToRole="return_record" />
+        </EntityType>
+        <EntityType Name="return_record">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="readerid" Type="Int32" />
+          <Property Name="bookid" Type="Int32" />
+          <Property Name="returndate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="book" Relationship="Self.FK__return_re__booki__7A672E12" FromRole="return_record" ToRole="book" />
+          <NavigationProperty Name="reader" Relationship="Self.FK__return_re__reade__797309D9" FromRole="return_record" ToRole="reader" />
+        </EntityType>
+        <Association Name="FK__book__booktype__6EF57B66">
+          <End Role="bookType" Type="Self.bookType" Multiplicity="0..1" />
+          <End Role="book" Type="Self.book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bookType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="book">
+              <PropertyRef Name="booktype" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__brrow_dat__booki__74AE54BC">
+          <End Role="book" Type="Self.book" Multiplicity="0..1" />
+          <End Role="brrow_data" Type="Self.brrow_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="book">
+              <PropertyRef Name="bookid" />
+            </Principal>
+            <Dependent Role="brrow_data">
+              <PropertyRef Name="bookid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__return_re__booki__7A672E12">
+          <End Role="book" Type="Self.book" Multiplicity="0..1" />
+          <End Role="return_record" Type="Self.return_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="book">
+              <PropertyRef Name="bookid" />
+            </Principal>
+            <Dependent Role="return_record">
+              <PropertyRef Name="bookid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__brrow_dat__brrow__73BA3083">
+          <End Role="reader" Type="Self.reader" Multiplicity="0..1" />
+          <End Role="brrow_data" Type="Self.brrow_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reader">
+              <PropertyRef Name="readerid" />
+            </Principal>
+            <Dependent Role="brrow_data">
+              <PropertyRef Name="readerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__return_re__reade__797309D9">
+          <End Role="reader" Type="Self.reader" Multiplicity="0..1" />
+          <End Role="return_record" Type="Self.return_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reader">
+              <PropertyRef Name="readerid" />
+            </Principal>
+            <Dependent Role="return_record">
+              <PropertyRef Name="readerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookManagerSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="book" EntityType="Self.book" />
+          <EntitySet Name="bookType" EntityType="Self.bookType" />
+          <EntitySet Name="brrow_data" EntityType="Self.brrow_data" />
+          <EntitySet Name="reader" EntityType="Self.reader" />
+          <EntitySet Name="return_record" EntityType="Self.return_record" />
+          <AssociationSet Name="FK__book__booktype__6EF57B66" Association="Self.FK__book__booktype__6EF57B66">
+            <End Role="bookType" EntitySet="bookType" />
+            <End Role="book" EntitySet="book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__brrow_dat__booki__74AE54BC" Association="Self.FK__brrow_dat__booki__74AE54BC">
+            <End Role="book" EntitySet="book" />
+            <End Role="brrow_data" EntitySet="brrow_data" />
+          </AssociationSet>
+          <AssociationSet Name="FK__return_re__booki__7A672E12" Association="Self.FK__return_re__booki__7A672E12">
+            <End Role="book" EntitySet="book" />
+            <End Role="return_record" EntitySet="return_record" />
+          </AssociationSet>
+          <AssociationSet Name="FK__brrow_dat__brrow__73BA3083" Association="Self.FK__brrow_dat__brrow__73BA3083">
+            <End Role="reader" EntitySet="reader" />
+            <End Role="brrow_data" EntitySet="brrow_data" />
+          </AssociationSet>
+          <AssociationSet Name="FK__return_re__reade__797309D9" Association="Self.FK__return_re__reade__797309D9">
+            <End Role="reader" EntitySet="reader" />
+            <End Role="return_record" EntitySet="return_record" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BookManagerSystemModelStoreContainer" CdmEntityContainer="BookManagerSystemEntities">
+          <EntitySetMapping Name="book">
+            <EntityTypeMapping TypeName="BookManagerSystemModel.book">
+              <MappingFragment StoreEntitySet="book">
+                <ScalarProperty Name="bookid" ColumnName="bookid" />
+                <ScalarProperty Name="booktype" ColumnName="booktype" />
+                <ScalarProperty Name="bookauthor" ColumnName="bookauthor" />
+                <ScalarProperty Name="bookname" ColumnName="bookname" />
+                <ScalarProperty Name="bookImgSrc" ColumnName="bookImgSrc" />
+                <ScalarProperty Name="booklibrary" ColumnName="booklibrary" />
+                <ScalarProperty Name="bookpubdate" ColumnName="bookpubdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bookType">
+            <EntityTypeMapping TypeName="BookManagerSystemModel.bookType">
+              <MappingFragment StoreEntitySet="bookType">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="typeName" ColumnName="typeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="brrow_data">
+            <EntityTypeMapping TypeName="BookManagerSystemModel.brrow_data">
+              <MappingFragment StoreEntitySet="brrow_data">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="readerid" ColumnName="readerid" />
+                <ScalarProperty Name="bookid" ColumnName="bookid" />
+                <ScalarProperty Name="brrowdate" ColumnName="brrowdate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reader">
+            <EntityTypeMapping TypeName="BookManagerSystemModel.reader">
+              <MappingFragment StoreEntitySet="reader">
+                <ScalarProperty Name="readerid" ColumnName="readerid" />
+                <ScalarProperty Name="readername" ColumnName="readername" />
+                <ScalarProperty Name="readertype" ColumnName="readertype" />
+                <ScalarProperty Name="readerpwd" ColumnName="readerpwd" />
+                <ScalarProperty Name="createAt" ColumnName="createAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="return_record">
+            <EntityTypeMapping TypeName="BookManagerSystemModel.return_record">
+              <MappingFragment StoreEntitySet="return_record">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="readerid" ColumnName="readerid" />
+                <ScalarProperty Name="bookid" ColumnName="bookid" />
+                <ScalarProperty Name="returndate" ColumnName="returndate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
